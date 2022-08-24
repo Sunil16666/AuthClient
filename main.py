@@ -16,13 +16,16 @@ if os.path.exists('config.json'):
         os.remove('config.json')
     elif x.json()['status'] == 'ok':
         print('activated')
+    elif x.json()['status'] == 'invalid':
+        print('your key is currently disabled')
 
 else:
     license_key = input("Give me key: ")
     config = {"machine_id": machine_id, "license_key": license_key}
 
     x = requests.get('https://mctea.tk/verify2.php?type=register&license_key=' + config['license_key'] + '&machine_id=' + config['machine_id'])
-    if x.json()['status'] == 'ok' and x.json()['registered'] == 'true':
+    if x.json()['status'] == 'ok' and x.json()['registered'] == 'true' and x.json()['status'] == 'valid':
+        print('your key is valid')
         with open('config.json', 'w') as f:
             json.dump(config, f)
         print('key installed')
